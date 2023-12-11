@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
-import puppeteer from "puppeteer";
+
+import { chromium } from "playwright";
 
 const listaUrl = "https://predaqualis.netlify.app/lista/";
 
@@ -18,15 +19,15 @@ export async function POST(request: Request) {
     .replace(/ *\([^)]*\) */g, "")
     .replace(".", "");
 
-  const browser = await puppeteer.launch({
-    headless: "new",
+  const browser = await chromium.launch({
+    headless: true,
   });
   const page = await browser.newPage();
 
   await page.goto(listaUrl);
-  await page.setViewport({ width: 1080, height: 1024 });
+  await page.setViewportSize({ width: 1080, height: 1024 });
 
-  await page.type(
+  await page.fill(
     "#DataTables_Table_0 > thead > tr:nth-child(2) > td:nth-child(3) > div > input",
     journal ?? ""
   );

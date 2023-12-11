@@ -12,12 +12,14 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "cheerio": "1.0.0-rc.12",
+    "chrome-aws-lambda": "^10.1.0",
     "framer-motion": "^10.16.16",
     "next": "14.0.4",
+    "playwright": "^1.40.1",
+    "puppeteer": "21.6.0",
     "react": "^18",
-    "react-dom": "^18",
-    "cheerio": "1.0.0-rc.12",
-    "puppeteer": "21.6.0"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
