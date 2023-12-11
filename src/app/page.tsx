@@ -57,23 +57,27 @@ export default function Home() {
             e.g. https://pubmed.ncbi.nlm.nih.gov/36119826/
           </FormHelperText>
         </FormControl>
-        <Button disabled={loading} type="submit">
+        <Button isLoading={loading} disabled={loading} type="submit">
           {loading ? "Pesquisando" : "Pesquisar"}
         </Button>
       </HStack>
       {error && <Text>Parece que ocorreu um erro. :/</Text>}
-      {data.keyword && (
+      {!loading && data.keyword && (
         <Box mt="10">
           <Text>
             <strong>Palavra-chave:</strong> {data.keyword}{" "}
           </Text>
-          <Text>
-            {data.response.length === 0
-              ? "Esta revista não parece ser predatória"
-              : `Atenção, essa revista pode ser predatória. Suas classificações CAPES são: ${data.response.join(
-                  ", "
-                )}`}
-          </Text>
+          <Text
+            mt="5"
+            dangerouslySetInnerHTML={{
+              __html:
+                data.response[0] === null
+                  ? "Esta revista não parece ser predatória."
+                  : `Atenção, essa revista pode ser predatória. Suas classificações CAPES são: <strong>${data.response.join(
+                      ", "
+                    )}</strong>`,
+            }}
+          ></Text>
         </Box>
       )}
     </Box>
