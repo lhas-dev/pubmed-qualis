@@ -17,10 +17,30 @@ export default function Home() {
   const [data, setData] = useState({ keyword: "", response: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [url, setUrl] = useState("");
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    alert("ae");
+
+    (async () => {
+      try {
+        setError(false);
+        setLoading(true);
+        const req = await fetch("/api", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        });
+        const res = await req.json();
+        setLoading(false);
+
+        setData(res);
+      } catch (e) {
+        setError(true);
+      }
+    })();
   };
   return (
     <Box as="form" onSubmit={onSubmit} p="10">
@@ -28,13 +48,20 @@ export default function Home() {
       <HStack gap="10" mt="10">
         <FormControl>
           <FormLabel>PubMed URL</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
           <FormHelperText>
             e.g. https://pubmed.ncbi.nlm.nih.gov/36119826/
           </FormHelperText>
         </FormControl>
-        <Button type="submit">{loading ? "Pesquisando" : "Pesquisar"}</Button>
+        <Button disabled={loading} type="submit">
+          {loading ? "Pesquisando" : "Pesquisar"}
+        </Button>
       </HStack>
+      {error && <Text>Parece que ocorreu um erro. :/</Text>}
       {data.keyword && (
         <Box mt="10">
           <Text>
